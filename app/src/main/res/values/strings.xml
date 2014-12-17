@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- <string name="app_name">Undo Deleted</string> -->
+    <string name="swingin">Animation in adapters</string>
+    <string name="itemmanipulation">Item manipulation</string>
+    <string name="bottomin">Bottom in</string>
+    <string name="rightin">Right in</string>
+    <string name="leftin">Left in</string>
+    <string name="bottomrightin">Bottom right in</string>
+    <string name="scalein">Scale in</string>
+    <string name="alphain">Alpha in</string>
+    <string name="googlecards">Google cards example</string>
+    <string name="gridviewexample">GridView example</string>
+    <string name="swipedismiss">Swipe to dismiss</string>
+    <string name="animateremoval">Animate dismiss</string>
+
+    <string name="removeselected">Remove selected</string>
+    <string name="contextualundo">Contextual Undo</string>
+    <string name="expandablelistitemadapter">Expand List Items</string>
+    <string name="itemdeleted">Item deleted</string>
+    <string name="taptoundo">Tap to undo</string>
+
+    <string name="explainexpand">Tap on cards to expand or collapse them</string>
+    <string name="expandorcollapsecard">This is card number %d</string>
+
+    <string name="app_name">DmsInfoSystem</string>
+    <string name="products_drawer">Our Products</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_share">Share App</string>
+    <string name="action_contact">Contact Us</string>
+    <string name="drawer_open">Products</string>
+    <string name="drawer_close">DMS</string>
+    <string name="searchHint">Product Search</string>
+
+    <string-array name="popularProducts">
+        <item>Email Hosting</item>
+        <item>Web Designing</item>
+        <item>SEO</item>
+        <item>SMM</item>
+    </string-array>
+
+    <string-array name="product">
+        <item>Hosting</item>
+        <item>Development</item>
+        <item>Digital</item>
+        <item>Design</item>
+        <item>Services</item>
+    </string-array>
+
+        <string-array name="productHosting">
+            <item>Web Hosting</item>
+            <item>Reseller Hosting</item>
+            <item>Email Hosting</item>
+        </string-array>
+
+        <string-array name="productDevelopment">
+            <item>Website Development</item>
+            <item>Website Redesigning</item>
+            <item>ECommerce Development</item>
+        </string-array>
+
+        <string-array name="productDigital">
+            <item>Search Engine Optimisation</item>
+            <item>Social Media Marketing</item>
+        </string-array>
+
+        <string-array name="productDesign">
+            <item>Logo Designing</item>
+            <item>Emailer Designing</item>
+            <item>Brochure Designing</item>
+            <item>Stationary Designing</item>
+            <item>Custom Designing</item>
+        </string-array>
+
+        <string-array name="productServices">
+            <item>Website maintenance</item>
+            <item>Bulk SMS</item>
+            <item>Bulk Emailer</item>
+            <item>Content Writing</item>
+        </string-array>
+
+    <array name="subProduct">
+        <item>@array/productHosting</item>
+        <item>@array/productDevelopment</item>
+        <item>@array/productDigital</item>
+        <item>@array/productDesign</item>
+        <item>@array/productServices</item>
+    </array>
+
+    <string-array name="hostingPackages">
+        <item>Basic</item>
+        <item>Standard</item>
+        <item>Premium</item>
+        <item>Premium Plus</item>
+    </string-array>
+
+
+
+</resources>

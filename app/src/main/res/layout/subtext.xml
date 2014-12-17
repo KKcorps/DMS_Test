@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <TextView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:id="@+id/text"
+        android:textSize="16dip"
+        android:textStyle="bold"
+        android:text="Products"
+        android:typeface="sans"
+        android:paddingTop="6dip"
+        android:paddingBottom="6dip"
+        android:paddingLeft="10dip"
+        android:background="#006882"
+        android:textColor="#ffffff"
+    />

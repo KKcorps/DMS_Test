@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1"
+        android:id="@+id/ll">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Confirmation Form"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:id="@+id/textView"
+            android:background="#006882"
+            android:textColor="#ffffff"
+            android:layout_weight="0.09" />
+
+
+        <EditText
+            android:id="@+id/contactName1"
+            android:layout_margin="10dp"
+            android:paddingTop="10dp"
+            android:hint="Your Name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/contactemail1"
+            android:layout_margin="10dp"
+            android:paddingTop="10dp"
+            android:hint="Your Email"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/contactNumber1"
+            android:hint="Mobile Number"
+            android:layout_margin="10dp"
+            android:paddingTop="10dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+
+
+        <Button
+            android:id="@+id/done"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:paddingTop="10dp"
+            android:text="Done"
+            android:layout_gravity="center"/>
+
+
+
+
+
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,33 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".HomeScreen" >
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+
+    <item android:id="@+id/action_share"
+        android:title="@string/action_share"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+
+    <item android:id="@+id/action_contact"
+        android:title="@string/action_contact"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+    <!-- Search Widget -->
+    <item
+        android:id="@+id/action_search"
+        android:actionViewClass="android.widget.SearchView"
+        android:icon="@drawable/ic_action_search"
+        android:showAsAction="always"
+        android:title="Search"/>
+    <item android:id="@+id/cart"
+        android:title="cart_title"
+        android:icon="@drawable/cart"
+        android:showAsAction="always"
+        />
+
+
+</menu>
+
