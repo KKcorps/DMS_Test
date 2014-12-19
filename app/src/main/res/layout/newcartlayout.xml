@@ -7,9 +7,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cart"
+        android:text="Product Cart"
         android:gravity="center_horizontal"
-        android:textSize="40dp"
+        android:textSize="20dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:background="#006882"
@@ -25,9 +25,40 @@
         android:id="@+id/itemListView"
         android:isScrollContainer="true"
         android:layout_below="@+id/headView"
-        android:layout_above="@+id/confirmButton">
+        android:layout_above="@+id/totalAmount">
     </ListView>
+    <LinearLayout
+        android:orientation="horizontal" android:layout_width="match_parent"
+        android:id="@id/totalAmount"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:background="#232233"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/confirmButton">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/itemTotal"
+            android:text="Net Amount"
+            android:textSize="20sp"
+            android:textColor="#cccccc"
+            android:paddingLeft="12dp"
+            android:layout_weight="0.6"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rs. 7000"
+            android:id="@+id/itemTotalPrice"
+            android:textSize="20sp"
+            android:layout_weight="0.4"
+            android:textAlignment="viewEnd"
+            android:layout_gravity="end"
+            android:textColor="#cccccc"/>
+
+    </LinearLayout>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,6 +67,8 @@
         android:freezesText="false"
         android:background="#006882"
         android:textColor="#ffffff"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:id="@+id/confirmButton"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"/>

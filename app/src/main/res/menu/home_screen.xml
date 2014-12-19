@@ -22,6 +22,8 @@
         android:icon="@drawable/ic_action_search"
         android:showAsAction="always"
         android:title="Search"/>
+
+    <!-- Cart -->
     <item android:id="@+id/cart"
         android:title="cart_title"
         android:icon="@drawable/cart"

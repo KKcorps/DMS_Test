@@ -11,14 +11,17 @@ public class Cartsql extends SQLiteOpenHelper {
     public static String TABLE_USERS = "Users";
     public static String COLUMN_ID = "_id";
     public static String COLUMN_NAME = "name";
+    public static String COLUMN_PRICE = "price";
     private static String DATABASE_NAME = "test_users.db";
-    private static int DATABASE_VERSION = 1;
+    public static int DATABASE_VERSION = 1;
     public static String NAME;
+    public static String PRICE;
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table "
             + TABLE_USERS + "(" + COLUMN_ID
             + " integer primary key autoincrement, "
             + COLUMN_NAME
+            + " text not null, "+ COLUMN_PRICE
             + " text not null);" ;
 
 
@@ -39,13 +42,13 @@ public class Cartsql extends SQLiteOpenHelper {
 
 
 
-    public void onInsert(SQLiteDatabase database,String name){
+    public void onInsert(SQLiteDatabase database,String name, int Price){
 
         NAME = name;
-
+        PRICE = String.valueOf(Price);
 
         final String DATABASE_INSERT = "insert into "
-                +TABLE_USERS + "(" + COLUMN_NAME +") values ('"+NAME + "');" ;
+                +TABLE_USERS + "(" + COLUMN_NAME +"," + COLUMN_PRICE + ") values ('"+NAME+"','"+PRICE+"');" ;
 
         Log.i("SQL", DATABASE_INSERT);
         database.execSQL(DATABASE_INSERT);

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -25,6 +26,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 
 import java.io.File;
@@ -74,7 +76,7 @@ public class HomeScreen extends Activity {
 
         shareApp = (Button) findViewById(R.id.shareApp);
         final Intent share = new Intent(Intent.ACTION_SEND);
-        share.setType("image/*") ; // might be text, sound, whatever
+        share.setType("image/*"); // might be text, sound, whatever
         share.putExtra(Intent.EXTRA_STREAM, R.drawable.slide1);
         share.putExtra(Intent.EXTRA_TEXT,"DMS Infosystem now on Play Store.Check it out at https://play.google.com/store/apps/details?id=com.dmsinfosystem");
 
@@ -107,10 +109,10 @@ public class HomeScreen extends Activity {
         PopularProductsArray = getResources().getStringArray(R.array.popularProducts);
         SliderLayout sliderShow = (SliderLayout) findViewById(R.id.slider);
 
-        TextSliderView textSliderView = new TextSliderView(this);
-        TextSliderView textSliderView1 = new TextSliderView(this);
-        TextSliderView textSliderView2 = new TextSliderView(this);
-        TextSliderView textSliderView3 = new TextSliderView(this);
+        DefaultSliderView textSliderView = new DefaultSliderView(this);
+        DefaultSliderView textSliderView1 = new DefaultSliderView(this);
+        DefaultSliderView textSliderView2 = new DefaultSliderView(this);
+        DefaultSliderView textSliderView3 = new DefaultSliderView(this);
 
         textSliderView
                 .description("Hosting")
@@ -163,6 +165,7 @@ public class HomeScreen extends Activity {
         }*/
 
         //Setting up Navigation Drawer
+
         mProducts = getResources().getStringArray(R.array.product);
         //mSubProducts = getResources().getStringArray(R.array.subProduct);
 
@@ -226,7 +229,7 @@ public class HomeScreen extends Activity {
                 R.string.drawer_close  /* "close drawer" description for accessibility */
         ) {
             public void onDrawerClosed(View view) {
-                getActionBar().setTitle(R.string.drawer_close);
+                getActionBar().setTitle(R.string.app_name);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
@@ -287,6 +290,9 @@ public class HomeScreen extends Activity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectItem(position);
             Log.i("Navigation", String.valueOf(position) +" In Item click listened method");
+            if(position==0 || position==4 || position==8 || position==11 || position==17) {
+                return;
+            }
             TextView clickedText = (TextView) view.findViewById(R.id.textSeparator);
 
             //clickedText.setTextColor(Color.parseColor("#232223"));
@@ -341,7 +347,6 @@ public class HomeScreen extends Activity {
         //setTitle(mPlanetTitles[position]);
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

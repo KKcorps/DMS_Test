@@ -66,8 +66,8 @@ public class SubProductActivity extends Activity{
         db = openOrCreateDatabase("test_users.db", Context.MODE_PRIVATE, null);
 
         helper = new Cartsql(getApplicationContext());
-
         helper.onCreate(db);
+
         mExpandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
         mSubProduct = (TextView) findViewById(R.id.subProductHeading);
         SubProductHeading = product.getStringExtra("subProduct");
@@ -85,8 +85,8 @@ public class SubProductActivity extends Activity{
         }
 
         initialiseList(SubProductHeading, SheetNo, workbookStream);
-        button_d =product.getStringExtra("subProduct");
-        mExpandableListAdapter = new com.dmsinfosystem.ExpandableListAdapter(this, HostingPackages, ChildPackages,button_d,db,helper);
+
+        mExpandableListAdapter = new com.dmsinfosystem.ExpandableListAdapter(this, HostingPackages, ChildPackages,SubProductHeading ,db,helper);
         mExpandableListView.setAdapter(mExpandableListAdapter);
         mExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override

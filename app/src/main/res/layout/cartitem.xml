@@ -11,12 +11,23 @@
         android:layout_width="wrap_content"
         android:id="@+id/itemInfo"
         android:text="Item 1"
-        android:textSize="20dp"
+        android:textSize="15sp"
         android:textColor="#cccccc"
         android:paddingLeft="12dp"
-        android:layout_weight="0.99"
+        android:layout_weight="1"
         android:layout_gravity="center"
         android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rs. 7000"
+        android:id="@+id/itemPrice"
+        android:textSize="15sp"
+        android:paddingRight="12dp"
+        android:textAlignment="viewEnd"
+        android:layout_gravity="end"
+        android:textColor="#cccccc"/>
   <!--  <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

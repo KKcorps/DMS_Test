@@ -72,7 +72,7 @@ public class SmsActivity extends Activity{
             Log.i(TAG,DB_PATH);
             try{
                 database = SQLiteDatabase.openDatabase(DB_PATH, null, Context.MODE_PRIVATE);
-                cursor = database.query("Users", new String[]{"_id","name"}, null, null, null, null, null);
+                cursor = database.query("Users", new String[]{"_id","name","price"}, null, null, null, null, null);
                 cursor.moveToFirst();
 
                 boolean ffff= cursor.moveToFirst();

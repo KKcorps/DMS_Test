@@ -7,7 +7,7 @@
         android:paddingTop="6dp"
         android:paddingBottom="6dp"
         android:paddingLeft="40dp"
-        android:textSize="18dip"
+        android:textSize="14dip"
         android:text="Products"
         android:textColor="#cccccc"
         android:background="#232223"
