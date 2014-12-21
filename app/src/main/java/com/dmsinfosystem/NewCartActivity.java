@@ -28,6 +28,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class NewCartActivity extends Activity {
     public static View itemView;
     public static LayoutInflater itemInflator;
     public static ImageButton B;
-    public TextView totalPrice,totalPriceInfo;
+    public TextView totalPrice,totalPriceInfo,NetPrice,ServiceTax,EduCess,SHECess;
     public String Status;
     private Cartsql helper;
 
@@ -69,19 +70,31 @@ public class NewCartActivity extends Activity {
         //helper = new Cartsql(getApplicationContext());
 
         //helper.onCreate(database);
-        //ll = (LinearLayout) findViewById(R.id.itemLinearList);
+        ll = (LinearLayout) findViewById(R.id.amountList);
 
         lv = (ListView) findViewById(R.id.itemListView);
         totalAmount = (LinearLayout) findViewById(R.id.totalAmount);
 
         totalPrice = (TextView) findViewById(R.id.itemTotalPrice);
         totalPriceInfo = (TextView) findViewById(R.id.itemTotal);
+        NetPrice = (TextView) findViewById(R.id.netAmountPrice);
+        ServiceTax = (TextView) findViewById(R.id.serviceTaxPrice);
+        EduCess = (TextView) findViewById(R.id.educationCessPrice);
+        SHECess = (TextView) findViewById(R.id.sheCessPrice);
 
         preferences = getApplicationContext().getSharedPreferences("MyPref",Context.MODE_PRIVATE);
         int netPrice;
+        double serviceTax,eduCess,sheCess;
         netPrice = preferences.getInt("Total Price", 0);
+        serviceTax = roundTwoDecimals(0.12 * netPrice);
+        eduCess = roundTwoDecimals(0.02 * serviceTax);
+        sheCess = roundTwoDecimals(0.01 * serviceTax);
 
         totalPrice.setText("Rs. "+ String.valueOf(netPrice) );
+        ServiceTax.setText("Rs. " + String.valueOf(serviceTax));
+        EduCess.setText("Rs. "+ String.valueOf(eduCess));
+        SHECess.setText("Rs. " + String.valueOf(sheCess));
+        NetPrice.setText("Rs. "+String.valueOf(netPrice + serviceTax + eduCess + sheCess) );
 
         File dbFile = this.getDatabasePath("test_users.db");
         DB_PATH = dbFile.getAbsolutePath();
@@ -98,8 +111,11 @@ public class NewCartActivity extends Activity {
                     editor.commit();
                     totalPrice.setText("");
                     totalPriceInfo.setText("No Items in Cart");
+                    ll.setVisibility(View.INVISIBLE);
+
                 }else{
-                    totalPriceInfo.setText("Net Amount");
+                    totalPriceInfo.setText("Gross Amount");
+                    ll.setVisibility(View.VISIBLE);
                 }
                 //Setting  Listener on the Confirm Button
                 final Button confirmOrder = (Button) findViewById(R.id.confirmButton);
@@ -165,12 +181,16 @@ public class NewCartActivity extends Activity {
                 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
                 View adapterView = info.targetView;
+
                 TextView adapterTextView = (TextView) adapterView.findViewById(R.id.itemInfo);
                 TextView adapterPriceView = (TextView) adapterView.findViewById(R.id.itemPrice);
 
                 preferences = getApplicationContext().getSharedPreferences("MyPref",Context.MODE_PRIVATE);
                 int oldAmount = preferences.getInt("Total Price", 0);
                 int newAmount = oldAmount - Integer.valueOf(adapterPriceView.getText().toString());
+                double serviceTax = roundTwoDecimals(0.12*newAmount);
+                double eduCess = roundTwoDecimals(0.02*serviceTax);
+                double sheCess = roundTwoDecimals(0.01*serviceTax);
 
                 editor = preferences.edit();
 
@@ -180,6 +200,8 @@ public class NewCartActivity extends Activity {
                 Cursor newCursor = database.query("Users", new String[]{"_id", "name","price"}, null, null, null, null, null);
                 ((SimpleCursorAdapter) lv.getAdapter()).swapCursor(newCursor);
                 ((SimpleCursorAdapter) lv.getAdapter()).notifyDataSetChanged();
+                ll = (LinearLayout) findViewById(R.id.amountList);
+                Button confirmOrder = (Button) findViewById(R.id.confirmButton);
                 if(newCursor.getCount()<=0) {
                     editor.putInt("Total Price", 0).apply();
                     editor.commit();
@@ -187,12 +209,40 @@ public class NewCartActivity extends Activity {
                     totalPrice.setText("");
                     totalPriceInfo = (TextView) findViewById(R.id.itemTotal);
                     totalPriceInfo.setText("No Items in Cart");
+                    ll.setVisibility(View.INVISIBLE);
+                    confirmOrder.setText("Close Cart");
+                    confirmOrder.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            finish();
+                        }
+                    });
 
                 }else{
                     editor.putInt("Total Price", newAmount).apply();
                     editor.commit();
+
+                    totalPriceInfo = (TextView) findViewById(R.id.itemTotal);
+                    totalPriceInfo.setText("Gross Amount");
+
                     totalPrice = (TextView) findViewById(R.id.itemTotalPrice);
                     totalPrice.setText("Rs. " + String.valueOf(newAmount));
+                    ServiceTax.setText("Rs. " + String.valueOf(serviceTax));
+                    EduCess.setText("Rs. "+String.valueOf(eduCess));
+                    SHECess.setText("Rs. "+String.valueOf(sheCess));
+                    NetPrice.setText("Rs. "+String.valueOf( roundTwoDecimals(newAmount + serviceTax + eduCess + sheCess) ) );
+                    ll.setVisibility(View.VISIBLE);
+                    confirmOrder.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            Intent Infor = new Intent(NewCartActivity.this, SmsActivity.class);
+                            startActivity(Infor);
+                            Log.i("Status", "" + Status);
+                            //Uri.parse("http://59.162.167.52/api/MessageCompose?admin=contact@dmsinfosystem.com&user=amit@dmsinfosystem.com:W124X4&senderID=TEST SMS&receipientno=9717304620&msgtxt=hello&state=4");
+                            Log.i("Done", "Done");
+                        }
+                    });
                 }
 
 
@@ -203,6 +253,12 @@ public class NewCartActivity extends Activity {
          return super.onContextItemSelected(item);
 
     }
+
+    public double roundTwoDecimals(double d) {
+        DecimalFormat twoDForm = new DecimalFormat("#.##");
+        return Double.valueOf(twoDForm.format(d));
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -220,9 +276,12 @@ public class NewCartActivity extends Activity {
             case R.id.clear_all:
                 SQLiteDatabase del_database = SQLiteDatabase.openDatabase(DB_PATH, null, Context.MODE_PRIVATE);
                 ListView lv = (ListView) findViewById(R.id.itemListView);
+                ll = (LinearLayout) findViewById(R.id.amountList);
+                Button confirmOrder = (Button) findViewById(R.id.confirmButton);
                 preferences = getApplicationContext().getSharedPreferences("MyPref",Context.MODE_PRIVATE);
                 editor = preferences.edit();
                 del_database.execSQL("delete from "+ TABLE_NAME);
+
                 Cursor newCursor = database.query("Users", new String[]{"_id", "name","price"}, null, null, null, null, null);
                 ((SimpleCursorAdapter) lv.getAdapter()).swapCursor(newCursor);
                 ((SimpleCursorAdapter) lv.getAdapter()).notifyDataSetChanged();
@@ -233,7 +292,17 @@ public class NewCartActivity extends Activity {
                 totalPrice.setText("");
                 totalPriceInfo = (TextView) findViewById(R.id.itemTotal);
                 totalPriceInfo.setText("No Items in Cart");
+                ll.setVisibility(View.INVISIBLE);
+
+                confirmOrder.setText("Close Cart");
+                confirmOrder.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        finish();
+                    }
+                });
                 Log.i(TAG, "Cart Cleared");
+
 
         }
         return super.onOptionsItemSelected(item);

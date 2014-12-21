@@ -69,7 +69,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.subtext, null);
+            convertView = infalInflater.inflate(R.layout.groupfeatures, null);
         }
 
         TextView txtListChild = (TextView) convertView
@@ -107,18 +107,20 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.grouprow, null);
+            convertView = infalInflater.inflate(R.layout.newgrouprow, null);
         }
         //LinearLayout headerLayout = (LinearLayout) convertView.findViewById(R.id.groupHeadingLayout);
 
         TextView lblListHeader = (TextView) convertView
                 .findViewById(R.id.groupText);
+        TextView groupPriceInfo = (TextView) convertView.findViewById(R.id.groupPrice);
+
         final Button buyButton = (Button) convertView.findViewById(R.id.buyButton);
         final int buttonPrice = _listDataPrices.get(_button_id.replace(" ",""))[groupPosition];
 
         final String buttonName = _listDataHeader.get(groupPosition)+_button_id.replace(" ","");
-        if(buttonPrice==0) buyButton.setText("Buy: Custom Price");
-        else buyButton.setText("Buy: Rs. "+ String.valueOf(buttonPrice));
+        if(buttonPrice==0) groupPriceInfo.setText("Custom Price");
+        else groupPriceInfo.setText("Rs. "+ String.valueOf(buttonPrice)+"/Year");
 
 
         //Shared preferences to get the total amount
@@ -140,11 +142,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 if (cur.getCount()<=0) {
                     Log.i("Buy","Cursor is Null");
                     _helper.onInsert(_db, buttonName, buttonPrice);
-                    buyButton.setText("Bought");
+                    buyButton.setText("Added");
 
                     int TotalPrice = preferences.getInt("Total Price", 0);
                     editor.putInt("Total Price",TotalPrice+buttonPrice).apply();
                     editor.commit();
+                    Toast.makeText(_context, "Item Added to Cart", Toast.LENGTH_SHORT);
 
                 }else{
                     Log.i("Buy","Cursor is not Null");
@@ -153,7 +156,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
 
 
-                    Toast.makeText(_context, "Item Added to Cart", Toast.LENGTH_SHORT);
+
 
                     Log.i("Buy", "Buy Button working " + _button_id);
 

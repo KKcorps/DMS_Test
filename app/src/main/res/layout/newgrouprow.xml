@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:minHeight="60dp"
+    android:background="#336682"
+    android:baselineAligned="false">
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="0.6"
+        android:orientation="vertical"
+        android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical">
+    <TextView
+        android:id="@+id/groupText"
+        android:textColor="#ffffff"
+        android:text="Basic"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:typeface="sans"
+        android:ellipsize="end"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+     <TextView
+         android:id="@+id/groupPrice"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="Rs. 7999/Year"
+         android:textColor="#ffffff"
+         android:ellipsize="end"
+         android:textSize="12sp"
+         />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buyButton"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:background="@drawable/buttonselector"
+        android:textColor="#000000"
+        android:text="Add to Cart"
+        android:layout_weight="0.4"
+        android:focusable="false"
+        android:freezesText="false"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" />
+
+</LinearLayout>
