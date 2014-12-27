@@ -11,10 +11,7 @@
         android:orderInCategory="100"
         android:showAsAction="never" />
 
-    <item android:id="@+id/action_contact"
-        android:title="@string/action_contact"
-        android:orderInCategory="100"
-        android:showAsAction="never" />
+
     <!-- Search Widget -->
     <item
         android:id="@+id/action_search"
@@ -26,7 +23,7 @@
     <!-- Cart -->
     <item android:id="@+id/cart"
         android:title="cart_title"
-        android:icon="@drawable/cart"
+        android:icon="@drawable/shopping_cart_filled48"
         android:showAsAction="always"
         />
 

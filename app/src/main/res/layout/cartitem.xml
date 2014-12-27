@@ -4,7 +4,6 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:paddingTop="15dp"
     android:paddingBottom="15dp"
-    android:background="#232233"
     android:layout_height="wrap_content">
 
     <TextView
@@ -12,7 +11,7 @@
         android:id="@+id/itemInfo"
         android:text="Item 1"
         android:textSize="15sp"
-        android:textColor="#cccccc"
+        android:textColor="#232233"
         android:paddingLeft="12dp"
         android:layout_weight="1"
         android:layout_gravity="center"
@@ -27,7 +26,7 @@
         android:paddingRight="12dp"
         android:textAlignment="viewEnd"
         android:layout_gravity="end"
-        android:textColor="#cccccc"/>
+        android:textColor="#232233"/>
   <!--  <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

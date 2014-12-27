@@ -87,7 +87,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.DialogWindowTitle"
         android:text="Visit us:"
-        android:id="@+id/textView2"
+        android:id="@+id/textWaitInfo"
         android:layout_weight="0.09"
         android:layout_marginTop="10dp"
         android:textIsSelectable="false"/>

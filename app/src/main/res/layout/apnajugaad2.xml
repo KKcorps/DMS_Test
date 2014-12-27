@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:id="@+id/"
+    android:id="@+id/iehriuehriu"
     android:clickable="false">
 
     <TextView
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Bidding Details"
-        android:id="@+id/textView2"
+        android:id="@+id/textWaitInfo"
         android:gravity="center_horizontal"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
@@ -48,7 +48,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Last Bid: 800"
         android:id="@+id/textView3"
-        android:layout_below="@+id/textView2"
+        android:layout_below="@+id/textWaitInfo"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="37dp"

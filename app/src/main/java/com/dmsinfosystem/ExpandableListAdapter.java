@@ -13,6 +13,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -118,10 +119,30 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         final Button buyButton = (Button) convertView.findViewById(R.id.buyButton);
         final int buttonPrice = _listDataPrices.get(_button_id.replace(" ",""))[groupPosition];
 
-        final String buttonName = _listDataHeader.get(groupPosition)+_button_id.replace(" ","");
-        if(buttonPrice==0) groupPriceInfo.setText("Custom Price");
+        //final String buttonName = _listDataHeader.get(groupPosition)+ " " +_button_id.replace(" ","");
+        final String buttonName = '"'+_listDataHeader.get(groupPosition) +" "+_button_id+'"';
+
+        if(buttonPrice==0) {
+            groupPriceInfo.setText("Custom Price");
+            buyButton.setVisibility(View.INVISIBLE);
+            LinearLayout grouprowInfoText = (LinearLayout) convertView.findViewById(R.id.groupRowInfoText);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,1f);
+            grouprowInfoText.setLayoutParams(layoutParams);
+
+            grouprowInfoText.setGravity(Gravity.CENTER_VERTICAL);
+
+        }
         else groupPriceInfo.setText("Rs. "+ String.valueOf(buttonPrice)+"/Year");
 
+        Cursor cur = _db.rawQuery("SELECT * FROM " + "Users" + " where name='" + buttonName + "'", null);
+
+        if (cur.getCount()>0) {
+            Log.i("Buy", "Cursor is Null");
+            buyButton.setText("Added");
+            buyButton.setBackgroundResource(R.drawable.button_noclick);
+            //buyButton.setClickable(false);
+            //buyButton.setEnabled(false);
+        }
 
         //Shared preferences to get the total amount
 
@@ -143,14 +164,18 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     Log.i("Buy","Cursor is Null");
                     _helper.onInsert(_db, buttonName, buttonPrice);
                     buyButton.setText("Added");
+                    buyButton.setBackgroundResource(R.drawable.button_noclick);
+                    //buyButton.setClickable(false);
+                    //buyButton.setEnabled(false);
 
                     int TotalPrice = preferences.getInt("Total Price", 0);
                     editor.putInt("Total Price",TotalPrice+buttonPrice).apply();
                     editor.commit();
-                    Toast.makeText(_context, "Item Added to Cart", Toast.LENGTH_SHORT);
+                    Toast.makeText(_context, "Item added to Cart", Toast.LENGTH_SHORT).show();
 
                 }else{
                     Log.i("Buy","Cursor is not Null");
+                    Toast.makeText(_context, "Item already present in Cart", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -209,7 +234,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         _listDataPrices.put("SocialMediaMarketing",packagesPrice);
 
         packagesPrice = new int[]{3000,5000,15000};
-        _listDataPrices.put("LogoDesiging",packagesPrice);
+        _listDataPrices.put("LogoDesigning",packagesPrice);
 
         packagesPrice = new int[]{0};
         _listDataPrices.put("EmailerDesigning",packagesPrice);

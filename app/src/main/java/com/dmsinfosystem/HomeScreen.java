@@ -26,6 +26,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 
@@ -47,9 +48,10 @@ public class HomeScreen extends Activity {
     private String[] mProductNames;
     private String subProduct;
     private DrawerLayout mDrawerLayout;
+    private Intent subActivitySlider;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-    private LinearLayout imageGallery;
+    private LinearLayout imageGallery,subProductll;
     private HorizontalScrollView mHorizontalScrollViewTop;
     //private int[] ImageArray = {R.drawable.seoportrait3,R.drawable.rsz_ecommerce,R.drawable.webdevelopmentportrait2};
     private String[] PopularProductsArray;
@@ -74,6 +76,7 @@ public class HomeScreen extends Activity {
             }
         });
 
+
         shareApp = (Button) findViewById(R.id.shareApp);
         final Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("image/*"); // might be text, sound, whatever
@@ -91,8 +94,6 @@ public class HomeScreen extends Activity {
                     uris.add(Uri.fromFile(new File(getApplicationInfo().publicSourceDir)));
                     sendIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
                     startActivity(Intent.createChooser(sendIntent, null));
-
-
                 }catch(Exception e){
 
                     ArrayList<Uri> uris = new ArrayList<Uri>();
@@ -114,21 +115,58 @@ public class HomeScreen extends Activity {
         DefaultSliderView textSliderView2 = new DefaultSliderView(this);
         DefaultSliderView textSliderView3 = new DefaultSliderView(this);
 
+
         textSliderView
                 .description("Hosting")
-                .image(R.drawable.slide1);
+                .image(R.drawable.slide1)
+                .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+                    @Override
+                    public void onSliderClick(BaseSliderView baseSliderView) {
+                        subActivitySlider = new Intent(HomeScreen.this, SubProductActivity.class);
+                        subActivitySlider.putExtra("subProduct","Web Hosting");
+                        Log.i(TAG,"Slider click listener working");
+                        startActivity(subActivitySlider);
+                    }
+                });
 
         textSliderView1
                 .description("Ecommerce")
-                .image(R.drawable.slide2);
+                .image(R.drawable.slide2)
+                .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+                    @Override
+                    public void onSliderClick(BaseSliderView baseSliderView) {
+                        subActivitySlider = new Intent(HomeScreen.this, SubProductActivity.class);
+                        subActivitySlider.putExtra("subProduct","ECommerce Development");
+                        Log.i(TAG,"Slider click listener working");
+                        startActivity(subActivitySlider);
+                    }
+                });
 
         textSliderView2
                 .description("SEO")
-                .image(R.drawable.slide3);
+                .image(R.drawable.slide3)
+                .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+                    @Override
+                    public void onSliderClick(BaseSliderView baseSliderView) {
+                        subActivitySlider = new Intent(HomeScreen.this, SubProductActivity.class);
+                        subActivitySlider.putExtra("subProduct","Search Engine Optimisation");
+                        Log.i(TAG,"Slider click listener working");
+                        startActivity(subActivitySlider);
+                    }
+                });
 
         textSliderView3
                 .description("Web Development")
-                .image(R.drawable.slide4);
+                .image(R.drawable.slide4)
+                .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+                    @Override
+                    public void onSliderClick(BaseSliderView baseSliderView) {
+                        subActivitySlider = new Intent(HomeScreen.this, SubProductActivity.class);
+                        subActivitySlider.putExtra("subProduct","Website Development");
+                        Log.i(TAG,"Slider click listener working");
+                        startActivity(subActivitySlider);
+                    }
+                });
 
         sliderShow.addSlider(textSliderView);
         sliderShow.addSlider(textSliderView1);

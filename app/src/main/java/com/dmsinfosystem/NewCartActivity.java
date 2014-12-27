@@ -26,6 +26,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -48,6 +49,8 @@ public class NewCartActivity extends Activity {
     public TextView totalPrice,totalPriceInfo,NetPrice,ServiceTax,EduCess,SHECess;
     public String Status;
     private Cartsql helper;
+    private int netPrice;
+    private double serviceTax,eduCess,sheCess;
 
     private SharedPreferences preferences;
     private static SharedPreferences.Editor editor;
@@ -64,6 +67,7 @@ public class NewCartActivity extends Activity {
 
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+        Toast.makeText(getApplicationContext(),"Touch and hold to remove items",Toast.LENGTH_LONG).show();
 
         //database = openOrCreateDatabase("test_users.db", Context.MODE_PRIVATE, null);
 
@@ -83,8 +87,7 @@ public class NewCartActivity extends Activity {
         SHECess = (TextView) findViewById(R.id.sheCessPrice);
 
         preferences = getApplicationContext().getSharedPreferences("MyPref",Context.MODE_PRIVATE);
-        int netPrice;
-        double serviceTax,eduCess,sheCess;
+
         netPrice = preferences.getInt("Total Price", 0);
         serviceTax = roundTwoDecimals(0.12 * netPrice);
         eduCess = roundTwoDecimals(0.02 * serviceTax);
@@ -94,7 +97,9 @@ public class NewCartActivity extends Activity {
         ServiceTax.setText("Rs. " + String.valueOf(serviceTax));
         EduCess.setText("Rs. "+ String.valueOf(eduCess));
         SHECess.setText("Rs. " + String.valueOf(sheCess));
-        NetPrice.setText("Rs. "+String.valueOf(netPrice + serviceTax + eduCess + sheCess) );
+        NetPrice.setText("Rs. "+String.valueOf(roundTwoDecimals(netPrice + serviceTax + eduCess + sheCess)) );
+
+
 
         File dbFile = this.getDatabasePath("test_users.db");
         DB_PATH = dbFile.getAbsolutePath();
@@ -136,7 +141,8 @@ public class NewCartActivity extends Activity {
                         public void onClick(View view) {
 
                             Intent Infor = new Intent(NewCartActivity.this, SmsActivity.class);
-                            startActivity(Infor);
+                            Infor.putExtra("Net Amount","Rs. "+String.valueOf(roundTwoDecimals(netPrice + serviceTax + eduCess + sheCess)));
+                            startActivityForResult(Infor, 101);
                             Log.i("Status", "" + Status);
                             //Uri.parse("http://59.162.167.52/api/MessageCompose?admin=contact@dmsinfosystem.com&user=amit@dmsinfosystem.com:W124X4&senderID=TEST SMS&receipientno=9717304620&msgtxt=hello&state=4");
                             Log.i("Done", "Done");
@@ -150,6 +156,50 @@ public class NewCartActivity extends Activity {
         }
         registerForContextMenu(lv);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 101) {
+            if (resultCode == Activity.RESULT_OK) {
+                Toast.makeText(getApplicationContext(),"Order Placed Succesfully", Toast.LENGTH_LONG).show();
+                ClearDatabase();
+
+            } else if(resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void ClearDatabase(){
+        SQLiteDatabase del_database = SQLiteDatabase.openDatabase(DB_PATH, null, Context.MODE_PRIVATE);
+        ListView lv = (ListView) findViewById(R.id.itemListView);
+        ll = (LinearLayout) findViewById(R.id.amountList);
+        Button confirmOrder = (Button) findViewById(R.id.confirmButton);
+        preferences = getApplicationContext().getSharedPreferences("MyPref",Context.MODE_PRIVATE);
+        editor = preferences.edit();
+        del_database.execSQL("delete from "+ TABLE_NAME);
+
+        Cursor newCursor = database.query("Users", new String[]{"_id", "name","price"}, null, null, null, null, null);
+        ((SimpleCursorAdapter) lv.getAdapter()).swapCursor(newCursor);
+        ((SimpleCursorAdapter) lv.getAdapter()).notifyDataSetChanged();
+
+        editor.putInt("Total Price", 0).apply();
+        editor.commit();
+        totalPrice = (TextView) findViewById(R.id.itemTotalPrice);
+        totalPrice.setText("");
+        totalPriceInfo = (TextView) findViewById(R.id.itemTotal);
+        totalPriceInfo.setText("No Items in Cart");
+        ll.setVisibility(View.INVISIBLE);
+
+        confirmOrder.setText("Close Cart");
+        confirmOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        Log.i(TAG, "Cart Cleared");
     }
 
     @Override
@@ -194,8 +244,6 @@ public class NewCartActivity extends Activity {
 
                 editor = preferences.edit();
 
-
-
                 del_database.delete(TABLE_NAME, "name=?", new String[]{adapterTextView.getText().toString()});
                 Cursor newCursor = database.query("Users", new String[]{"_id", "name","price"}, null, null, null, null, null);
                 ((SimpleCursorAdapter) lv.getAdapter()).swapCursor(newCursor);
@@ -237,7 +285,7 @@ public class NewCartActivity extends Activity {
                         public void onClick(View view) {
 
                             Intent Infor = new Intent(NewCartActivity.this, SmsActivity.class);
-                            startActivity(Infor);
+                            startActivityForResult(Infor, 101);
                             Log.i("Status", "" + Status);
                             //Uri.parse("http://59.162.167.52/api/MessageCompose?admin=contact@dmsinfosystem.com&user=amit@dmsinfosystem.com:W124X4&senderID=TEST SMS&receipientno=9717304620&msgtxt=hello&state=4");
                             Log.i("Done", "Done");
@@ -274,7 +322,8 @@ public class NewCartActivity extends Activity {
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
             case R.id.clear_all:
-                SQLiteDatabase del_database = SQLiteDatabase.openDatabase(DB_PATH, null, Context.MODE_PRIVATE);
+                ClearDatabase();
+                /*SQLiteDatabase del_database = SQLiteDatabase.openDatabase(DB_PATH, null, Context.MODE_PRIVATE);
                 ListView lv = (ListView) findViewById(R.id.itemListView);
                 ll = (LinearLayout) findViewById(R.id.amountList);
                 Button confirmOrder = (Button) findViewById(R.id.confirmButton);
@@ -301,7 +350,7 @@ public class NewCartActivity extends Activity {
                         finish();
                     }
                 });
-                Log.i(TAG, "Cart Cleared");
+                Log.i(TAG, "Cart Cleared");*/
 
 
         }

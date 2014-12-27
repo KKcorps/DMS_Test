@@ -71,7 +71,7 @@ public class ContactUsActivity extends Activity {
             @Override
             public void onClick(View view) {
 
-                String phone = "tel:+917583837766" ;
+                String phone = "tel:+917583837800" ;
                 Intent phoneCall = new Intent(Intent.ACTION_CALL, Uri.parse(phone));
 
                 EndCallListener callListener = new EndCallListener();

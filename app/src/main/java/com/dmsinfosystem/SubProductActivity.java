@@ -6,15 +6,26 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.DataSetObserver;
 import android.database.sqlite.SQLiteDatabase;
+import android.gesture.Gesture;
+import android.gesture.GestureLibraries;
+import android.gesture.GestureLibrary;
+import android.gesture.GestureOverlayView;
+import android.gesture.Prediction;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +38,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
+import jxl.format.*;
 import jxl.read.biff.BiffException;
 import jxl.read.biff.File;
 import jxl.*;
@@ -35,7 +48,7 @@ import jxl.read.biff.WorkbookParser;
  * Created by root on 8/12/14.
  */
 
-public class SubProductActivity extends Activity{
+public class SubProductActivity extends Activity implements GestureOverlayView.OnGesturePerformedListener{
 
     private String button_d;
     private Cartsql helper;
@@ -46,6 +59,7 @@ public class SubProductActivity extends Activity{
 
     private TextView mSubProduct;
     private String SubProductHeading;
+    private LinearLayout subproductll;
 
     private List<String> HostingPackages = new ArrayList<String>();
 
@@ -55,12 +69,14 @@ public class SubProductActivity extends Activity{
     private List<String> PremiumPlusPackages = new ArrayList<String>();
     private HashMap<String, List<String> > ChildPackages = new HashMap<String, List<String> >() ;
     private static int j, SheetNo;
-    private Intent product;
+    private Intent product,activityFromFooter;
+    GestureLibrary mLibrary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.subactivity);
+        subproductll = (LinearLayout) findViewById(R.id.subActivityll);
 
         product = getIntent();
         db = openOrCreateDatabase("test_users.db", Context.MODE_PRIVATE, null);
@@ -98,7 +114,26 @@ public class SubProductActivity extends Activity{
             }
         });
 
-        if(mExpandableListAdapter.getGroupCount()==1) mExpandableListView.expandGroup(0);
+        if(mExpandableListAdapter.getGroupCount()==1) {
+            mExpandableListView.expandGroup(0);
+            //LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+            //View groupView = inflater.inflate(R.layout.newgrouprow,null);
+
+            //Button BuyButton = (Button) groupView.findViewById(R.id.buyButton);
+            //BuyButton.setVisibility(View.INVISIBLE);
+        }
+
+        initialiseFooter();
+
+        //GesturePerformer
+        mLibrary = GestureLibraries.fromRawResource(this, R.raw.gestures);
+        if (!mLibrary.load()) {
+            Log.i("GestureListener","No Library Found");
+        }
+
+        GestureOverlayView gestures = (GestureOverlayView) findViewById(R.id.gestures);
+        gestures.addOnGesturePerformedListener(this);
+
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -278,6 +313,8 @@ public class SubProductActivity extends Activity{
                     if(!cell.getContents().isEmpty()){
                         for (int i = 1; i < sheet.getRows(); i++) {
                             Cell cel = sheet.getCell(j, i);
+                            //jxl.format.CellFormat format = cel.getCellFormat();
+
                             if(includeFeaturesColumn) resultSet.add(cel.getContents() + " " + features.get(i));
                             else resultSet.add(cel.getContents());
 
@@ -323,6 +360,84 @@ public class SubProductActivity extends Activity{
         }
 
         return baos.toByteArray(); // be sure to close InputStream in calling function
+    }
+
+    private void initialiseFooter(){
+        View footerView =  ((LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer, null, false);
+
+        final ImageButton BSearch = (ImageButton) footerView.findViewById(R.id.footerSearch);
+
+        BSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activityFromFooter = new Intent(SubProductActivity.this, SearchListActivity.class);
+                startActivity(activityFromFooter);
+
+                //BSearch.setBackgroundColor(Color.parseColor("#FDC619"));
+            }
+        });
+
+
+        ImageButton BCart = (ImageButton) footerView.findViewById(R.id.footerCart);
+        BCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activityFromFooter = new Intent(SubProductActivity.this, NewCartActivity.class);
+                startActivity(activityFromFooter);
+            }
+        });
+
+        ImageButton BHome = (ImageButton) footerView.findViewById(R.id.footerHome);
+
+        BHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //activityFromFooter = new Intent(SubProductActivity.this, SearchListActivity.class);
+                //startActivity(activityFromFooter);
+                //view.setBackgroundColor(Color.parseColor("#FDC619"));
+                finish();
+            }
+        });
+
+        ImageButton BFaceBook = (ImageButton) footerView.findViewById(R.id.footerFaceBook);
+        BFaceBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activityFromFooter = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/DMSInfoSystem"));
+                startActivity(activityFromFooter);
+            }
+        });
+
+        ImageButton BLinkedIn = (ImageButton) footerView.findViewById(R.id.footerLinkedIn);
+        BLinkedIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activityFromFooter = new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.linkedin.com/company/dms-infosystem-pvt-ltd-"));
+                startActivity(activityFromFooter);
+            }
+        });
+
+        subproductll.addView(footerView);
+
+    }
+
+    public void onGesturePerformed(GestureOverlayView overlay, Gesture gesture) {
+        ArrayList<Prediction> predictions = mLibrary.recognize(gesture);
+
+        if (predictions.size() > 0 && predictions.get(0).score > 1.0) {
+            String result = predictions.get(0).name;
+            if ("close".equalsIgnoreCase(result)) {
+                //Toast.makeText(this, "Opening the document", Toast.LENGTH_LONG).show();
+                Log.i("GestureListener","CLose Detected");
+                finish();
+            }else if("okay".equalsIgnoreCase(result)){
+                Log.i("Gesture Listener", "Okay detected");
+                Intent cartActivity = new Intent(SubProductActivity.this, NewCartActivity.class);
+                startActivity(cartActivity);
+            }
+        }
+
+        Log.i("GestureListener","Inside Gesture Listener");
     }
 
     @Override
